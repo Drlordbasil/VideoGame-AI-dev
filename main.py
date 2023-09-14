@@ -1,59 +1,116 @@
-import pygame
+import random
 import time
 
-# Initialize Pygame
-pygame.init()
 
-# Define colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.level = 1
+        self.health = 100
+        self.attack = 10
+        self.defense = 5
 
-# Set the width and height of the game window
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
+    def print_status(self):
+        print("Player Information")
+        print("===================")
+        print(f"Name: {self.name}")
+        print(f"Level: {self.level}")
+        print(f"Health: {self.health}")
+        print(f"Attack: {self.attack}")
+        print(f"Defense: {self.defense}")
 
-# Create the game window
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("My Python RPG Game")
+    def level_up(self):
+        self.level += 1
+        self.attack += random.randint(5, 10)
+        self.defense += random.randint(3, 8)
+        self.health = 100
 
-# Load player image
-player_image = pygame.image.load("player.png")
+    def attack_enemy(self, enemy):
+        damage = self.attack - enemy.defense
+        enemy.health -= damage
+        if enemy.health <= 0:
+            enemy.health = 0
 
-# Define player attributes
-player_pos = pygame.Vector2(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
-player_speed = 5
+        def print_status(self):
+            print("Enemy Information")
+            print("==================")
+            print(f"Name: {self.name}")
+            print(f"Level: {self.level}")
+            print(f"Health: {self.health}")
+            print(f"Attack: {self.attack}")
+            print(f"Defense: {self.defense}")
 
-# Game loop
-running = True
-clock = pygame.time.Clock()
-while running:
-    # Handle events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    def attack_player(self, player):
+        damage = self.attack - player.defense
+        player.health -= damage
+        if player.health <= 0:
+            player.health = 0
 
-    # Handle player movement
-    keys = pygame.key.get_pressed()
-    player_pos.x -= player_speed * keys[pygame.K_LEFT]
-    player_pos.x += player_speed * keys[pygame.K_RIGHT]
-    player_pos.y -= player_speed * keys[pygame.K_UP]
-    player_pos.y += player_speed * keys[pygame.K_DOWN]
-    
-    # Clamp player position within window boundaries
-    player_pos.x = max(0, min(WINDOW_WIDTH - player_image.get_width(), player_pos.x))
-    player_pos.y = max(0, min(WINDOW_HEIGHT - player_image.get_height(), player_pos.y))
 
-    # Update the game screen
-    window.fill(BLACK)
-    window.blit(player_image, player_pos)
+def print_intro():
+    print("Welcome to the Python RPG Game!")
+    print("================================")
+    print("In this game, you will battle against various enemies.")
+    print("Level up, gain powerful weapons, and defeat the final boss!")
+    print("May the odds be in your favor!")
+    print()
 
-    # Update the display
-    pygame.display.flip()
 
-    # Set the frame rate
-    clock.tick(60)
+def create_player():
+    name = input("Enter your player name: ")
+    player = Player(name)
+    print()
+    print("Player created successfully!")
+    print()
+    player.print_status()
+    print()
+    return player
 
-# Quit Pygame
-pygame.quit()
+
+def battle(player, enemy):
+    print(f"A wild {enemy.name} has appeared!")
+    print()
+    while True:
+        print(f"{player.name}'s Turn")
+        print("----------------")
+        print()
+        player.attack_enemy(enemy)
+        print(f"{player.name} attacked {enemy.name}!")
+        enemy.print_status()
+        print()
+        if enemy.health <= 0:
+            print(f"{player.name} defeated {enemy.name}!")
+            print()
+            player.level_up()
+            player.print_status()
+            print()
+            break
+        print(f"{enemy.name}'s Turn")
+        print("----------------")
+        print()
+        enemy.attack_player(player)
+        print(f"{enemy.name} attacked {player.name}!")
+        player.print_status()
+        print()
+        if player.health <= 0:
+            print(f"{player.name} was defeated by {enemy.name}!")
+            print()
+            break
+
+
+def play_game():
+    print_intro()
+    player = create_player()
+    enemies = [
+        Enemy("Zombie", 1),
+        Enemy("Skeleton", 2),
+        Enemy("Dragon", 5),
+        Enemy("Giant", 10),
+        Enemy("Final Boss", 100)
+    ]
+    for enemy in enemies:
+        input("Press enter to continue...")
+        print()
+        battle(player, enemy)
+
+play_game()
