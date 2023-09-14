@@ -3,12 +3,12 @@ import time
 
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, level=1, health=100, attack=10, defense=5):
         self.name = name
-        self.level = 1
-        self.health = 100
-        self.attack = 10
-        self.defense = 5
+        self.level = level
+        self.health = health
+        self.attack = attack
+        self.defense = defense
 
     def print_status(self):
         print("Player Information")
@@ -17,7 +17,7 @@ class Player:
         print(f"Level: {self.level}")
         print(f"Health: {self.health}")
         print(f"Attack: {self.attack}")
-        print(f"Defense: {self.defense}")
+        print(f"Defense: {self.defense}\n")
 
     def level_up(self):
         self.level += 1
@@ -25,13 +25,9 @@ class Player:
         self.defense += random.randint(3, 8)
         self.health = 100
 
-    def attack_enemy(self, enemy):
-        damage = max(0, self.attack - enemy.defense)
-        enemy.health -= damage
-
-    def attack_player(self, player):
-        damage = max(0, self.attack - player.defense)
-        player.health -= damage
+    def attack_entity(self, entity):
+        damage = max(0, self.attack - entity.defense)
+        entity.health -= damage
 
 
 class Enemy:
@@ -49,7 +45,7 @@ class Enemy:
         print(f"Level: {self.level}")
         print(f"Health: {self.health}")
         print(f"Attack: {self.attack}")
-        print(f"Defense: {self.defense}")
+        print(f"Defense: {self.defense}\n")
 
 
 def print_intro():
@@ -57,50 +53,37 @@ def print_intro():
     print("===============================")
     print("In this game, you will battle against various enemies.")
     print("Level up, gain powerful weapons, and defeat the final boss!")
-    print("May the odds be in your favor!")
-    print()
+    print("May the odds be in your favor!\n")
 
 
 def create_player():
     name = input("Enter your player name: ")
-    print()
-    print("Player created successfully!")
-    print()
+    print("Player created successfully!\n")
     return Player(name)
 
 
 def battle(player, enemy):
-    print(f"A wild {enemy.name} has appeared!")
-    print()
+    print(f"A wild {enemy.name} has appeared!\n")
     player.print_status()
-    print()
     enemy.print_status()
-    print()
     while True:
         print(f"{player.name}'s Turn")
-        print("----------------")
-        print()
-        player.attack_enemy(enemy)
+        print("----------------\n")
+        player.attack_entity(enemy)
         print(f"{player.name} attacked {enemy.name}!")
         enemy.print_status()
-        print()
         if enemy.health <= 0:
-            print(f"{player.name} defeated {enemy.name}!")
-            print()
+            print(f"{player.name} defeated {enemy.name}!\n")
             player.level_up()
             player.print_status()
-            print()
             break
         print(f"{enemy.name}'s Turn")
-        print("----------------")
-        print()
-        enemy.attack_player(player)
+        print("----------------\n")
+        enemy.attack_entity(player)
         print(f"{enemy.name} attacked {player.name}!")
         player.print_status()
-        print()
         if player.health <= 0:
-            print(f"{player.name} was defeated by {enemy.name}!")
-            print()
+            print(f"{player.name} was defeated by {enemy.name}!\n")
             break
 
 
