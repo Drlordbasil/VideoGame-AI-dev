@@ -1,5 +1,6 @@
 import random
 
+
 class Player:
     def __init__(self, name):
         self.name = name
@@ -8,15 +9,8 @@ class Player:
         self.attack = 10
         self.defense = 5
 
-    def print_status(self):
-        print("Player Information")
-        print("===================")
-        print(f"Name: {self.name}")
-        print(f"Level: {self.level}")
-        print(f"Health: {self.health}")
-        print(f"Attack: {self.attack}")
-        print(f"Defense: {self.defense}")
-        print()
+    def get_status(self):
+        return f"Player Information\n===================\nName: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nAttack: {self.attack}\nDefense: {self.defense}\n"
 
     def level_up(self):
         self.level += 1
@@ -41,15 +35,8 @@ class Enemy:
         self.attack = 5 + level * 2
         self.defense = 3 + level
 
-    def print_status(self):
-        print("Enemy Information")
-        print("==================")
-        print(f"Name: {self.name}")
-        print(f"Level: {self.level}")
-        print(f"Health: {self.health}")
-        print(f"Attack: {self.attack}")
-        print(f"Defense: {self.defense}")
-        print()
+    def get_status(self):
+        return f"Enemy Information\n==================\nName: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nAttack: {self.attack}\nDefense: {self.defense}\n"
 
 
 def print_intro():
@@ -57,7 +44,8 @@ def print_intro():
     print("===============================")
     print("In this game, you will battle against various enemies.")
     print("Level up, gain powerful weapons, and defeat the final boss!")
-    print("May the odds be in your favor!\n")
+    print("May the odds be in your favor!")
+    print()
 
 
 def create_player():
@@ -68,24 +56,26 @@ def create_player():
 
 def battle(player, enemy):
     print(f"A wild {enemy.name} has appeared!\n")
-    player.print_status()
-    enemy.print_status()
+    print(player.get_status())
+    print(enemy.get_status())
+
     while True:
-        print(f"{player.name}'s Turn")
-        print("------------------\n")
+        print(f"{player.name}'s Turn\n----------------\n")
         player.attack_enemy(enemy)
-        print(f"{player.name} attacked {enemy.name}!\n")
-        enemy.print_status()
+        print(f"{player.name} attacked {enemy.name}!")
+        print(enemy.get_status())
+
         if enemy.health <= 0:
             print(f"{player.name} defeated {enemy.name}!\n")
             player.level_up()
-            player.print_status()
+            print(player.get_status())
             break
-        print(f"{enemy.name}'s Turn")
-        print("------------------\n")
+
+        print(f"{enemy.name}'s Turn\n----------------\n")
         enemy.attack_player(player)
-        print(f"{enemy.name} attacked {player.name}!\n")
-        player.print_status()
+        print(f"{enemy.name} attacked {player.name}!")
+        print(player.get_status())
+
         if player.health <= 0:
             print(f"{player.name} was defeated by {enemy.name}!\n")
             break
@@ -101,6 +91,7 @@ def play_game():
         Enemy("Giant", 10),
         Enemy("Final Boss", 100)
     ]
+
     for enemy in enemies:
         input("Press enter to continue...\n")
         battle(player, enemy)
