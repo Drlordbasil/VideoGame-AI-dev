@@ -24,13 +24,9 @@ class Player:
         self.defense += random.randint(3, 8)
         self.health = 100
 
-    def attack_enemy(self, enemy):
-        damage = max(0, self.attack - enemy.defense)
-        enemy.health -= damage
-
-    def attack_player(self, player):
-        damage = max(0, self.attack - player.defense)
-        player.health -= damage
+    def attack_opponent(self, opponent):
+        damage = max(0, self.attack - opponent.defense)
+        opponent.health -= damage
 
 
 class Enemy:
@@ -69,37 +65,29 @@ def create_player():
 
 
 def battle(player, enemy):
-    print(f"A wild {enemy.name} has appeared!")
-    print()
+    print(f"A wild {enemy.name} has appeared!\n")
     player.print_status()
-    print()
     enemy.print_status()
-    print()
     while True:
         print(f"{player.name}'s Turn")
         print("----------------")
         print()
-        player.attack_enemy(enemy)
-        print(f"{player.name} attacked {enemy.name}!")
+        player.attack_opponent(enemy)
+        print(f"{player.name} attacked {enemy.name}!\n")
         enemy.print_status()
-        print()
         if enemy.health <= 0:
-            print(f"{player.name} defeated {enemy.name}!")
-            print()
+            print(f"{player.name} defeated {enemy.name}!\n")
             player.level_up()
             player.print_status()
-            print()
             break
         print(f"{enemy.name}'s Turn")
         print("----------------")
         print()
-        enemy.attack_player(player)
-        print(f"{enemy.name} attacked {player.name}!")
+        enemy.attack_opponent(player)
+        print(f"{enemy.name} attacked {player.name}!\n")
         player.print_status()
-        print()
         if player.health <= 0:
-            print(f"{player.name} was defeated by {enemy.name}!")
-            print()
+            print(f"{player.name} was defeated by {enemy.name}!\n")
             break
 
 
@@ -114,8 +102,7 @@ def play_game():
         Enemy("Final Boss", 100)
     ]
     for enemy in enemies:
-        input("Press enter to continue...")
-        print()
+        input("Press enter to continue...\n")
         battle(player, enemy)
 
 
