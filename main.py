@@ -1,5 +1,4 @@
 import random
-import time
 
 
 class Player:
@@ -26,90 +25,101 @@ class Player:
         self.health = 100
 
     def attack_enemy(self, enemy):
-        damage = self.attack - enemy.defense
+        damage = max(0, self.attack - enemy.defense)
         enemy.health -= damage
         enemy.health = max(0, enemy.health)
 
-        def print_status(self):
-            print("Enemy Information")
-            print("==================")
-            print(f"Name: {self.name}")
-            print(f"Level: {self.level}")
-            print(f"Health: {self.health}")
-            print(f"Attack: {self.attack}")
-            print(f"Defense: {self.defense}")
-
     def attack_player(self, player):
-        damage = self.attack - player.defense
+        damage = max(0, self.attack - player.defense)
         player.health -= damage
         player.health = max(0, player.health)
 
 
-def print_intro():
-    print("Welcome to the Python RPG Game!")
-    print("================================")
-    print("In this game, you will battle against various enemies.")
-    print("Level up, gain powerful weapons, and defeat the final boss!")
-    print("May the odds be in your favor!")
-    print()
+class Enemy:
+    def __init__(self, name, level):
+        self.name = name
+        self.level = level
+        self.health = random.randint(50, 100)
+        self.attack = random.randint(5, 10) * level
+        self.defense = random.randint(1, 5) * level
+
+    def print_status(self):
+        print("Enemy Information")
+        print("==================")
+        print(f"Name: {self.name}")
+        print(f"Level: {self.level}")
+        print(f"Health: {self.health}")
+        print(f"Attack: {self.attack}")
+        print(f"Defense: {self.defense}")
 
 
-def create_player():
-    name = input("Enter your player name: ")
-    player = Player(name)
-    print()
-    print("Player created successfully!")
-    print()
-    player.print_status()
-    print()
-    return player
+class Game:
+    def __init__(self):
+        self.player = None
+        self.enemies = [
+            Enemy("Zombie", 1),
+            Enemy("Skeleton", 2),
+            Enemy("Dragon", 5),
+            Enemy("Giant", 10),
+            Enemy("Final Boss", 100)
+        ]
 
-
-def battle(player, enemy):
-    print(f"A wild {enemy.name} has appeared!")
-    print()
-    while True:
-        print(f"{player.name}'s Turn")
-        print("----------------")
+    def print_intro(self):
+        print("Welcome to the Python RPG Game!")
+        print("================================")
+        print("In this game, you will battle against various enemies.")
+        print("Level up, gain powerful weapons, and defeat the final boss!")
+        print("May the odds be in your favor!")
         print()
-        player.attack_enemy(enemy)
-        print(f"{player.name} attacked {enemy.name}!")
-        enemy.print_status()
+
+    def create_player(self):
+        name = input("Enter your player name: ")
+        self.player = Player(name)
         print()
-        if enemy.health <= 0:
-            print(f"{player.name} defeated {enemy.name}!")
+        print("Player created successfully!")
+        print()
+        self.player.print_status()
+        print()
+
+    def battle(self, enemy):
+        print(f"A wild {enemy.name} has appeared!")
+        print()
+        while True:
+            print(f"{self.player.name}'s Turn")
+            print("----------------")
             print()
-            player.level_up()
-            player.print_status()
+            self.player.attack_enemy(enemy)
+            print(f"{self.player.name} attacked {enemy.name}!")
+            enemy.print_status()
             print()
-            break
-        print(f"{enemy.name}'s Turn")
-        print("----------------")
-        print()
-        enemy.attack_player(player)
-        print(f"{enemy.name} attacked {player.name}!")
-        player.print_status()
-        print()
-        if player.health <= 0:
-            print(f"{player.name} was defeated by {enemy.name}!")
+            if enemy.health <= 0:
+                print(f"{self.player.name} defeated {enemy.name}!")
+                print()
+                self.player.level_up()
+                self.player.print_status()
+                print()
+                break
+            print(f"{enemy.name}'s Turn")
+            print("----------------")
             print()
-            break
+            enemy.attack_player(self.player)
+            print(f"{enemy.name} attacked {self.player.name}!")
+            self.player.print_status()
+            print()
+            if self.player.health <= 0:
+                print(f"{self.player.name} was defeated by {enemy.name}!")
+                print()
+                break
+
+    def play_game(self):
+        self.print_intro()
+        self.create_player()
+        for enemy in self.enemies:
+            input("Press enter to continue...")
+            print()
+            self.battle(enemy)
 
 
-def play_game():
-    print_intro()
-    player = create_player()
-    enemies = [
-        Enemy("Zombie", 1),
-        Enemy("Skeleton", 2),
-        Enemy("Dragon", 5),
-        Enemy("Giant", 10),
-        Enemy("Final Boss", 100)
-    ]
-    for enemy in enemies:
-        input("Press enter to continue...")
-        print()
-        battle(player, enemy)
-
-
-play_game()
+if __name__ == "__main__":
+    game = Game()
+    game.play_game()
