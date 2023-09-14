@@ -54,7 +54,7 @@ class Enemy:
 
 def print_intro():
     print("Welcome to the Python RPG Game!")
-    print("================================")
+    print("===============================")
     print("In this game, you will battle against various enemies.")
     print("Level up, gain powerful weapons, and defeat the final boss!")
     print("May the odds be in your favor!")
@@ -120,4 +120,5 @@ def play_game():
         battle(player, enemy)
 
 
-play_game()
+if __name__ == '__main__':
+    play_game()
