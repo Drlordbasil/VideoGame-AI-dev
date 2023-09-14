@@ -28,8 +28,7 @@ class Player:
     def attack_enemy(self, enemy):
         damage = self.attack - enemy.defense
         enemy.health -= damage
-        if enemy.health <= 0:
-            enemy.health = 0
+        enemy.health = max(0, enemy.health)
 
         def print_status(self):
             print("Enemy Information")
@@ -43,8 +42,7 @@ class Player:
     def attack_player(self, player):
         damage = self.attack - player.defense
         player.health -= damage
-        if player.health <= 0:
-            player.health = 0
+        player.health = max(0, player.health)
 
 
 def print_intro():
@@ -112,5 +110,6 @@ def play_game():
         input("Press enter to continue...")
         print()
         battle(player, enemy)
+
 
 play_game()
