@@ -2,7 +2,14 @@ import random
 
 
 class Player:
+    """
+    Represents a player in the game.
+    """
+
     def __init__(self, name):
+        """
+        Initialize player object with default values.
+        """
         self.name = name
         self.level = 1
         self.health = 100
@@ -10,24 +17,44 @@ class Player:
         self.defense = 5
 
     def get_status(self):
-        return f"Player Information\n===================\nName: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nAttack: {self.attack}\nDefense: {self.defense}\n"
+        """
+        Get the status of the player.
+        """
+        status = f"Player Information\n===================\nName: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nAttack: {self.attack}\nDefense: {self.defense}\n"
+        return status
 
     def level_up(self):
+        """
+        Increment player level, increase attack and defense, and reset health.
+        """
         self.level += 1
         self.attack += random.randint(5, 10)
         self.defense += random.randint(3, 8)
         self.health = 100
 
     def attack_enemy(self, enemy):
+        """
+        Attack an enemy and deduct health based on damage.
+        """
         damage = max(0, self.attack - enemy.defense)
         enemy.receive_damage(damage)
 
     def receive_damage(self, damage):
+        """
+        Receive damage and deduct health.
+        """
         self.health -= damage
 
 
 class Enemy:
+    """
+    Represents an enemy in the game.
+    """
+
     def __init__(self, name, level):
+        """
+        Initialize enemy object with default values.
+        """
         self.name = name
         self.level = level
         self.health = 100 + level * 10
@@ -35,17 +62,30 @@ class Enemy:
         self.defense = 3 + level
 
     def get_status(self):
-        return f"Enemy Information\n==================\nName: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nAttack: {self.attack}\nDefense: {self.defense}\n"
+        """
+        Get the status of the enemy.
+        """
+        status = f"Enemy Information\n==================\nName: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nAttack: {self.attack}\nDefense: {self.defense}\n"
+        return status
 
     def attack_player(self, player):
+        """
+        Attack a player and deduct health based on damage.
+        """
         damage = max(0, self.attack - player.defense)
         player.receive_damage(damage)
 
     def receive_damage(self, damage):
+        """
+        Receive damage and deduct health.
+        """
         self.health -= damage
 
 
 def print_intro():
+    """
+    Print introduction to the game.
+    """
     print("Welcome to the Python RPG Game!")
     print("===============================")
     print("In this game, you will battle against various enemies.")
@@ -55,12 +95,18 @@ def print_intro():
 
 
 def create_player():
+    """
+    Create a player with a given name.
+    """
     name = input("Enter your player name: ")
     print("\nPlayer created successfully!\n")
     return Player(name)
 
 
 def battle(player, enemy):
+    """
+    Initiate a battle between player and enemy.
+    """
     print(f"A wild {enemy.name} has appeared!\n")
     print(player.get_status())
     print(enemy.get_status())
@@ -88,6 +134,9 @@ def battle(player, enemy):
 
 
 def play_game():
+    """
+    Start and play the game.
+    """
     print_intro()
     player = create_player()
     enemies = [
