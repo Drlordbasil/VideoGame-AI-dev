@@ -20,11 +20,10 @@ class Player:
 
     def attack_enemy(self, enemy):
         damage = max(0, self.attack - enemy.defense)
-        enemy.health -= damage
+        enemy.receive_damage(damage)
 
-    def attack_player(self, player):
-        damage = max(0, self.attack - player.defense)
-        player.health -= damage
+    def receive_damage(self, damage):
+        self.health -= damage
 
 
 class Enemy:
@@ -37,6 +36,13 @@ class Enemy:
 
     def get_status(self):
         return f"Enemy Information\n==================\nName: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nAttack: {self.attack}\nDefense: {self.defense}\n"
+
+    def attack_player(self, player):
+        damage = max(0, self.attack - player.defense)
+        player.receive_damage(damage)
+
+    def receive_damage(self, damage):
+        self.health -= damage
 
 
 def print_intro():
