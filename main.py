@@ -1,6 +1,5 @@
 import random
 
-
 class Player:
     def __init__(self, name):
         self.name = name
@@ -17,6 +16,7 @@ class Player:
         print(f"Health: {self.health}")
         print(f"Attack: {self.attack}")
         print(f"Defense: {self.defense}")
+        print()
 
     def level_up(self):
         self.level += 1
@@ -24,10 +24,13 @@ class Player:
         self.defense += random.randint(3, 8)
         self.health = 100
 
-    def attack_opponent(self, opponent):
-        damage = max(0, self.attack - opponent.defense)
-        opponent.health -= damage
+    def attack_enemy(self, enemy):
+        damage = max(0, self.attack - enemy.defense)
+        enemy.health -= damage
 
+    def attack_player(self, player):
+        damage = max(0, self.attack - player.defense)
+        player.health -= damage
 
 class Enemy:
     def __init__(self, name, level):
@@ -45,7 +48,7 @@ class Enemy:
         print(f"Health: {self.health}")
         print(f"Attack: {self.attack}")
         print(f"Defense: {self.defense}")
-
+        print()
 
 def print_intro():
     print("Welcome to the Python RPG Game!")
@@ -55,7 +58,6 @@ def print_intro():
     print("May the odds be in your favor!")
     print()
 
-
 def create_player():
     name = input("Enter your player name: ")
     print()
@@ -63,33 +65,34 @@ def create_player():
     print()
     return Player(name)
 
-
 def battle(player, enemy):
-    print(f"A wild {enemy.name} has appeared!\n")
+    print(f"A wild {enemy.name} has appeared!")
+    print()
     player.print_status()
     enemy.print_status()
     while True:
         print(f"{player.name}'s Turn")
         print("----------------")
         print()
-        player.attack_opponent(enemy)
-        print(f"{player.name} attacked {enemy.name}!\n")
+        player.attack_enemy(enemy)
+        print(f"{player.name} attacked {enemy.name}!")
         enemy.print_status()
         if enemy.health <= 0:
-            print(f"{player.name} defeated {enemy.name}!\n")
+            print(f"{player.name} defeated {enemy.name}!")
+            print()
             player.level_up()
             player.print_status()
             break
         print(f"{enemy.name}'s Turn")
         print("----------------")
         print()
-        enemy.attack_opponent(player)
-        print(f"{enemy.name} attacked {player.name}!\n")
+        enemy.attack_player(player)
+        print(f"{enemy.name} attacked {player.name}!")
         player.print_status()
         if player.health <= 0:
-            print(f"{player.name} was defeated by {enemy.name}!\n")
+            print(f"{player.name} was defeated by {enemy.name}!")
+            print()
             break
-
 
 def play_game():
     print_intro()
@@ -102,9 +105,9 @@ def play_game():
         Enemy("Final Boss", 100)
     ]
     for enemy in enemies:
-        input("Press enter to continue...\n")
+        input("Press enter to continue...")
+        print()
         battle(player, enemy)
-
 
 if __name__ == '__main__':
     play_game()
